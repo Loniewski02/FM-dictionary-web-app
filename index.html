@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&family=Inter:wght@400;700&family=Lora:wght@400;700&display=swap"
+    rel="stylesheet">
+  <link rel="icon" type="image/png" sizes="32x32" href="./dist/img/icons/favicon-32x32.png">
+  <link rel="stylesheet" href="./dist/css/style.min.css">
+  <title>Frontend Mentor | Dictionary web app</title>
+</head>
+
+<body class="">
+  <nav class="nav">
+    <div class="wrapper">
+      <img src="./dist/img/icons/logo.svg" alt="" class="nav__logo">
+      <div class="nav__box">
+        <div tabindex="0" class="nav__fonts">
+          <p class="nav__fonts-current-font">Sans Serif</p>
+          <ul class="nav__fonts-list">
+            <li tabindex="0" data-font="'Inter', sans-serif">Sans Serif</li>
+            <li tabindex="0" data-font="serif">Serif</li>
+            <li tabindex="0" data-font="'Inconsolata', monospace">Mono</li>
+          </ul>
+        </div>
+        <div class="nav__line"></div>
+        <div class="nav__mode">
+          <span tabindex="0" class="nav__mode-btn"></span>
+          <svg class="nav__mode-img" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+              d="M1 10.449a10.544 10.544 0 0 0 19.993 4.686C11.544 15.135 6.858 10.448 6.858 1A10.545 10.545 0 0 0 1 10.449Z" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main">
+    <section class="search wrapper">
+      <input type="text" id="search" class="search__input" placeholder="Search for any word…">
+      <p class="search__error-info">Whoops, can’t be empty…</p>
+      <button aria-label="search" class="search__btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+          <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+            d="m12.663 12.663 3.887 3.887M1 7.664a6.665 6.665 0 1 0 13.33 0 6.665 6.665 0 0 0-13.33 0Z" />
+        </svg>
+      </button>
+    </section>
+
+    <div class="container">
+      <!-- <section class="first-section wrapper">
+        <div class="first-section__box">
+          <span class="first-section__box-word"></span>
+          <span class="first-section__box-pronounce"></span>
+        </div>
+        <button aria-label="play" class="first-section__btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" viewBox="0 0 75 75">
+            <g fill="#A445ED" fill-rule="evenodd">
+              <circle fill="#A445ED" cx="37.5" cy="37.5" r="37.5" opacity=".25" />
+              <path d="M29 27v21l21-10.5z" />
+            </g>
+          </svg>
+        </button>
+      </section>
+
+      <section class="definition definition--noun wrapper">
+        <p class="definition__title">noun <span class="line"></span></p>
+        <dl class="definition__list">
+          <dt class="definition__list-title">Meaning</dt>
+          <dd class="definition__list-def">(etc.) A set of keys used to operate a typewriter, computer etc.</dd>
+          <dd class="definition__list-def">A component of many instruments including the piano, organ, and harpsichord
+            consisting of usually black and
+            white keys that cause different tones to be produced when struck.</dd>
+          <dd class="definition__list-def">A device with keys of a musical keyboard, used to control electronic
+            sound-producing devices which may be
+            built into or separate from the keyboard device.</dd>
+        </dl>
+        <p class="definition__synonyms">Synonyms <span>electronic keyboard</span></p>
+      </section>
+
+      <section class="definition definition--verb wrapper">
+        <p class="definition__title">verb <span class="line"></span></p>
+        <dl class="definition__list">
+          <dt class="definition__list-title">Meaning</dt>
+          <dd class="definition__list-def">To type on a computer keyboard.</dd>
+          <dd class="definition__list-def definition__list-def--example">“<span>Keyboarding is the part of this job I
+              hate
+              the most.</span>”
+          </dd>
+        </dl>
+      </section>
+
+      <section class="footer">
+        <div class="wrapper">
+          <div class="footer__line"></div>
+          <div class="footer__box">
+            <p class="footer__source">Source</p>
+            <a href="#" class="footer__link">https://en.wiktionary.org/wiki/keyboard</a>
+          </div>
+        </div>
+      </section> -->
+    </div>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.11/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+  <script src="./dist/js/main.min.js"></script>
+</body>
+
+</html>
