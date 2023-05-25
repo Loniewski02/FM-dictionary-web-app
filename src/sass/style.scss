@@ -232,7 +232,7 @@ body {
 }
 
 .not-found {
-	display: flex;
+	display: none;
 	flex-direction: column;
 	padding: 6rem 0;
 	text-align: center;
@@ -257,7 +257,7 @@ body {
 }
 
 .first-section {
-	display: flex;
+	display: none;
 	justify-content: space-between;
 	align-items: center;
 	margin-bottom: 2em;
@@ -468,11 +468,11 @@ body {
 		&__emoji {
 			font-size: 6.4rem;
 		}
-	
+
 		&__title {
 			font-size: 2rem;
 		}
-	
+
 		&__text {
 			font-size: 1.8rem;
 		}

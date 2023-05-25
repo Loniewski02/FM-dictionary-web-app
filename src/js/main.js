@@ -9,6 +9,9 @@ let currentFont;
 let fontBtn;
 let fontsBtns;
 
+let errorSection;
+let firstSection;
+
 const prepareDOMElements = () => {
 	body = document.querySelector('body');
 	themeBtn = document.querySelector('.nav__mode-btn');
@@ -21,6 +24,9 @@ const prepareDOMElements = () => {
 	currentFont = document.querySelector('.nav__fonts-current-font');
 	fontBtn = document.querySelector('.nav__fonts');
 	fontsBtns = document.querySelectorAll('.nav__fonts-list li');
+
+	errorSection = document.querySelector('.not-found');
+	firstSection = document.querySelector('.first-section');
 };
 
 const prepareDOMEvents = () => {
@@ -94,49 +100,62 @@ async function handleData() {
 
 		if (response.status === 200) {
 			const data = response.data;
-			mainContainer.innerHTML = '';
-			createFirstSection(data[0]);
+			handleFirstSection(data);
 			console.log(data);
 		}
 	} catch (error) {
 		if (error.response && error.response.status === 404) {
-			createSectionNotFound(error.response.data);
+			handleErrorSection(error.response.data);
 		} else {
 			console.error(error);
 		}
 	}
 }
 
-const createSectionNotFound = data => {
-	mainContainer.innerHTML = `
-	<section class="not-found wrapper">
-	<span class="not-found__emoji">😕</span>
-	<strong class="not-found__title">${data.title}</strong>
-	<p class="not-found__text">${data.message} ${data.resolution}</p>
-	</section>
-	`;
+const handleErrorSection = data => {
+	const title = errorSection.querySelector('.not-found__title');
+	const text = errorSection.querySelector('.not-found__text');
+	const emoji = errorSection.querySelector('.not-found__emoji');
+	errorSection.style.display = 'flex';
+	firstSection.style.display = 'none';
+	title.textContent = data.title;
+	text.textContent = data.message + ' ' + data.resolution;
+	emoji.textContent = '😕';
 };
 
-const createFirstSection = data => {
-	const section = document.createElement('section');
+const handleFirstSection = data => {
+	const wordSpan = firstSection.querySelector('.first-section__box-word');
+	const pronounceSpan = firstSection.querySelector('.first-section__box-pronounce');
+	const playBtn = firstSection.querySelector('.first-section__btn');
 
-	section.classList.add('first-section', 'wrapper');
-	section.innerHTML = `
-	<div class="first-section__box">
-	<span class="first-section__box-word">${data.word}</span>
-	<span class="first-section__box-pronounce">${data.phonetic}</span>
-  	</div>
-  	<button aria-label="play" class="first-section__btn">
-	<svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" viewBox="0 0 75 75">
-	<g fill="#A445ED" fill-rule="evenodd">
-	<circle fill="#A445ED" cx="37.5" cy="37.5" r="37.5" opacity=".25" />
-	<path d="M29 27v21l21-10.5z" />
-	</g>
-	</svg>
-  	</button>
-	`;
+	errorSection.style.display = 'none';
+	firstSection.style.display = 'flex';
 
-	mainContainer.appendChild(section);
+	wordSpan.textContent = data[0].word;
+	if (data[0].phonetics.length <= 0) {
+		pronounceSpan.style.visibility = 'hidden';
+	} else {
+		pronounceSpan.style.visibility = 'visible';
+
+		for (let i = 0; i < data[0].phonetics.length; i++) {
+			if (
+				data[0].phonetics[i].text &&
+				data[0].phonetics[i].text !== '' &&
+				data[0].phonetics[i].audio &&
+				data[0].phonetics[i].audio !== ''
+			) {
+				pronounceSpan.textContent = data[0].phonetics[i].text;
+				pronounceSpan.style.visibility = 'visible';
+				playBtn.src = data[0].phonetics[i].audio;
+				break;
+			}
+		}
+	}
+
+	playBtn.addEventListener('click', () => {
+		let audio = new Audio(playBtn.src);
+		audio.play();
+	});
 };
 
 const checkInput = () => {

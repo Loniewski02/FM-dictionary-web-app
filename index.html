@@ -41,7 +41,7 @@
   </nav>
 
   <main class="main">
-    <section class="search wrapper">
+    <div class="search wrapper">
       <input type="text" id="search" class="search__input" placeholder="Search for any word…">
       <p class="search__error-info">Whoops, can’t be empty…</p>
       <button aria-label="search" class="search__btn">
@@ -50,25 +50,32 @@
             d="m12.663 12.663 3.887 3.887M1 7.664a6.665 6.665 0 1 0 13.33 0 6.665 6.665 0 0 0-13.33 0Z" />
         </svg>
       </button>
+    </div>
+
+    <section class="not-found wrapper">
+      <span class="not-found__emoji"></span>
+      <strong class="not-found__title"></strong>
+      <p class="not-found__text"></p>
     </section>
 
-    <div class="container">
-      <!-- <section class="first-section wrapper">
-        <div class="first-section__box">
-          <span class="first-section__box-word"></span>
-          <span class="first-section__box-pronounce"></span>
-        </div>
-        <button aria-label="play" class="first-section__btn">
-          <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" viewBox="0 0 75 75">
-            <g fill="#A445ED" fill-rule="evenodd">
-              <circle fill="#A445ED" cx="37.5" cy="37.5" r="37.5" opacity=".25" />
-              <path d="M29 27v21l21-10.5z" />
-            </g>
-          </svg>
-        </button>
-      </section>
+    <section class="first-section wrapper">
+      <div class="first-section__box">
+        <span class="first-section__box-word"></span>
+        <span class="first-section__box-pronounce"></span>
+      </div>
+      <button aria-label="play" class="first-section__btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="75" height="75" viewBox="0 0 75 75">
+          <g fill="#A445ED" fill-rule="evenodd">
+            <circle fill="#A445ED" cx="37.5" cy="37.5" r="37.5" opacity=".25" />
+            <path d="M29 27v21l21-10.5z" />
+          </g>
+        </svg>
+      </button>
+    </section>
 
-      <section class="definition definition--noun wrapper">
+    <section class="definition-container">
+      <!-- 
+      <div class="definition definition--noun wrapper">
         <p class="definition__title">noun <span class="line"></span></p>
         <dl class="definition__list">
           <dt class="definition__list-title">Meaning</dt>
@@ -81,9 +88,9 @@
             built into or separate from the keyboard device.</dd>
         </dl>
         <p class="definition__synonyms">Synonyms <span>electronic keyboard</span></p>
-      </section>
+      </div>
 
-      <section class="definition definition--verb wrapper">
+      <div class="definition definition--verb wrapper">
         <p class="definition__title">verb <span class="line"></span></p>
         <dl class="definition__list">
           <dt class="definition__list-title">Meaning</dt>
@@ -93,9 +100,9 @@
               the most.</span>”
           </dd>
         </dl>
-      </section>
+      </div>
 
-      <section class="footer">
+      <div class="footer">
         <div class="wrapper">
           <div class="footer__line"></div>
           <div class="footer__box">
@@ -103,8 +110,10 @@
             <a href="#" class="footer__link">https://en.wiktionary.org/wiki/keyboard</a>
           </div>
         </div>
-      </section> -->
-    </div>
+      </div> -->
+    </section>
+
+
   </main>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.11/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
