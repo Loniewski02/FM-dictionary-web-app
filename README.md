@@ -46,6 +46,7 @@ Users should be able to:
 - SASS
 - Flexbox
 - CSS Grid
+- javaScript
 - Mobile-first workflow
 
 ## Author
