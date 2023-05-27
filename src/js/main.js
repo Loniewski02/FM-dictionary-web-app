@@ -11,6 +11,7 @@ let fontsBtns;
 
 let errorSection;
 let firstSection;
+let definitionSection;
 
 const prepareDOMElements = () => {
 	body = document.querySelector('body');
@@ -27,6 +28,7 @@ const prepareDOMElements = () => {
 
 	errorSection = document.querySelector('.not-found');
 	firstSection = document.querySelector('.first-section');
+	definitionSection = document.querySelector('.definition-container');
 };
 
 const prepareDOMEvents = () => {
@@ -95,12 +97,15 @@ const changeFont = e => {
 
 async function handleData() {
 	try {
-		const URL = `https://api.dictionaryapi.dev/api/v2/entries/en/${searchInput.value}`;
+		const word = searchInput.value.toLowerCase();
+		const URL = `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`;
 		const response = await axios.get(URL);
 
 		if (response.status === 200) {
 			const data = response.data;
+			definitionSection.innerHTML = '';
 			handleFirstSection(data);
+			prepareDefinitionSections(data);
 			console.log(data);
 		}
 	} catch (error) {
@@ -116,11 +121,14 @@ const handleErrorSection = data => {
 	const title = errorSection.querySelector('.not-found__title');
 	const text = errorSection.querySelector('.not-found__text');
 	const emoji = errorSection.querySelector('.not-found__emoji');
+	const playBtn = firstSection.querySelector('.first-section__btn');
 	errorSection.style.display = 'flex';
 	firstSection.style.display = 'none';
+	definitionSection.innerHTML = '';
 	title.textContent = data.title;
 	text.textContent = data.message + ' ' + data.resolution;
 	emoji.textContent = '😕';
+	playBtn.src = '';
 };
 
 const handleFirstSection = data => {
@@ -132,30 +140,177 @@ const handleFirstSection = data => {
 	firstSection.style.display = 'flex';
 
 	wordSpan.textContent = data[0].word;
-	if (data[0].phonetics.length <= 0) {
-		pronounceSpan.style.visibility = 'hidden';
-	} else {
-		pronounceSpan.style.visibility = 'visible';
+	setPronunciationAndPlayButton(data, pronounceSpan, playBtn);
+};
 
-		for (let i = 0; i < data[0].phonetics.length; i++) {
+const setPronunciationAndPlayButton = (data, pronounceSpan, playBtn) => {
+	let pronunciation = '';
+	let audioSrc = '';
+
+	for (let i = 0; i < data.length; i++) {
+		for (let j = 0; j < data[i].phonetics.length; j++) {
 			if (
-				data[0].phonetics[i].text &&
-				data[0].phonetics[i].text !== '' &&
-				data[0].phonetics[i].audio &&
-				data[0].phonetics[i].audio !== ''
+				data[i].phonetics[j].text &&
+				data[i].phonetics[j].text !== '' &&
+				data[i].phonetics[j].audio &&
+				data[i].phonetics[j].audio !== ''
 			) {
-				pronounceSpan.textContent = data[0].phonetics[i].text;
-				pronounceSpan.style.visibility = 'visible';
-				playBtn.src = data[0].phonetics[i].audio;
+				pronunciation = data[i].phonetics[j].text;
+				audioSrc = data[i].phonetics[j].audio;
 				break;
+			} else {
+				for (let k = 0; k < data[i].phonetics.length; k++) {
+					if (data[i].phonetics[k].text && data[i].phonetics[k].text !== '') {
+						pronunciation = data[i].phonetics[k].text;
+					}
+					if (data[i].phonetics[k].audio && data[i].phonetics[k].audio !== '') {
+						audioSrc = data[i].phonetics[k].audio;
+					}
+					break;
+				}
 			}
 		}
 	}
 
-	playBtn.addEventListener('click', () => {
-		let audio = new Audio(playBtn.src);
-		audio.play();
+	if (pronunciation === '') {
+		pronounceSpan.textContent = '/ not available /';
+		playBtn.src = '';
+	} else {
+		pronounceSpan.textContent = pronunciation;
+		playBtn.src = audioSrc;
+		playBtn.addEventListener('click', () => {
+			playAudio(playBtn.src);
+		});
+	}
+};
+
+const playAudio = src => {
+	let audio = new Audio(src);
+	audio.play();
+};
+
+const prepareDefinitionSections = data => {
+	const synonymsObject = {
+		verb: [],
+		noun: [],
+		adjective: [],
+	};
+
+	const definitionObject = {
+		verb: [],
+		noun: [],
+		adjective: [],
+	};
+
+	for (let i = 0; i < data.length; i++) {
+		for (let j = 0; j < data[i].meanings.length; j++) {
+			const meaning = data[i].meanings[j];
+
+			if ('synonyms' in meaning) {
+				const synonyms = meaning.synonyms;
+
+				for (let k = 0; k < synonyms.length; k++) {
+					if (!synonymsObject[meaning.partOfSpeech].includes(synonyms[k])) {
+						synonymsObject[meaning.partOfSpeech].push(synonyms[k]);
+					}
+				}
+			}
+
+			if ('definitions' in meaning) {
+				const definitions = meaning.definitions;
+
+				for (let k = 0; k < definitions.length; k++) {
+					const definition = {
+						definition: definitions[k].definition,
+						example: definitions[k].example,
+					};
+
+					if (!definitionObject[meaning.partOfSpeech].includes(definition)) {
+						definitionObject[meaning.partOfSpeech].push(definition);
+					}
+				}
+			}
+		}
+	}
+
+	createSections(synonymsObject, definitionObject);
+	createFooterSection(data);
+};
+
+const createSections = (synonymsObject, definitionObject) => {
+	if (definitionObject.noun.length > 0) {
+		createSection(synonymsObject.noun, 'noun', definitionObject.noun);
+	}
+	if (definitionObject.verb.length > 0) {
+		createSection(synonymsObject.verb, 'verb', definitionObject.verb);
+	}
+	if (definitionObject.adjective.length > 0) {
+		createSection(synonymsObject.adjective, 'adjective', definitionObject.adjective);
+	}
+};
+
+const createSection = (syn, speech, def) => {
+	const sectionNoun = document.createElement('div');
+	sectionNoun.classList.add('definition', 'wrapper');
+	sectionNoun.innerHTML = `<p class="definition__title">${speech} <span class="line"></span></p>`;
+
+	const list = document.createElement('dl');
+	list.classList.add('definition__list');
+	list.innerHTML = `<dt class="definition__list-title">Meaning</dt>`;
+
+	def.forEach(item => {
+		const definitionItem = document.createElement('dd');
+		definitionItem.classList.add('definition__list-def');
+		definitionItem.innerHTML = item.definition;
+
+		const exampleItem = document.createElement('dd');
+		if (item.example !== undefined) {
+			exampleItem.classList.add('definition__list-def', 'definition__list-def--example');
+			exampleItem.innerHTML = item.example;
+		}
+
+		list.appendChild(definitionItem);
+		list.appendChild(exampleItem);
 	});
+
+	sectionNoun.appendChild(list);
+
+	if (syn.length > 0) {
+		const synonyms = document.createElement('div');
+		synonyms.classList.add('definition__synonyms');
+		synonyms.innerHTML = `<span class='definition__synonyms-title'>Synonyms</span>`;
+
+		const span = document.createElement('span');
+		span.classList.add('definition__synonyms-synonym');
+
+		for (let i = 0; i < syn.length; i++) {
+			if (i === 0) {
+				span.innerHTML += syn[i];
+			} else {
+				span.innerHTML += `, ${syn[i]}`;
+			}
+		}
+
+		synonyms.appendChild(span);
+		sectionNoun.appendChild(synonyms);
+	}
+
+	definitionSection.appendChild(sectionNoun);
+};
+
+const createFooterSection = linkUrl => {
+	const footer = document.createElement('div');
+	footer.classList.add('footer');
+	footer.innerHTML = `
+	<div class="wrapper">
+	<div class="footer__line"></div>
+	<div class="footer__box">
+	  <p class="footer__source">Source</p>
+	  <a href="${linkUrl[0].sourceUrls}" class="footer__link">${linkUrl[0].sourceUrls[0]}</a>
+	</div>
+  	</div>`;
+
+	definitionSection.appendChild(footer);
 };
 
 const checkInput = () => {

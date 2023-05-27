@@ -153,7 +153,7 @@ body {
 
 .search {
 	position: relative;
-	margin-bottom: 1.5em;
+	margin-bottom: 2em;
 	background-color: $very-light-gray;
 	border-radius: 16px;
 	transition: background-color 0.5s;
@@ -191,7 +191,7 @@ body {
 
 	&__error-info {
 		position: absolute;
-		bottom: -50%;
+		bottom: -40%;
 		left: 5px;
 		font-size: 1.6rem;
 		color: $red;
@@ -370,10 +370,16 @@ body {
 	}
 
 	&__synonyms {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		column-gap: 1em;
 		font-size: 1.6rem;
-		color: $gray;
 
-		span {
+		&-title {
+			color: $gray;
+		}
+
+		&-synonym {
 			color: $purple;
 			font-weight: 700;
 		}
@@ -381,7 +387,7 @@ body {
 }
 
 .footer {
-	padding: 0 1.5em 3em;
+	padding-bottom: 3em;
 
 	&__line {
 		margin-bottom: 1.5em;
@@ -527,15 +533,11 @@ body {
 
 		&__synonyms {
 			font-size: 2rem;
-
-			span {
-				margin-left: 2em;
-			}
 		}
 	}
 
 	.footer {
-		padding: 0 2.5em 4em;
+		padding-bottom: 4em;
 
 		&__box {
 			flex-direction: row;
@@ -545,85 +547,6 @@ body {
 		&__link {
 			padding: 0;
 		}
-	}
-}
-
-@media (min-width: 992px) {
-	.main {
-		padding: 0 2.5em 2.5em;
-	}
-
-	.nav {
-		padding: 3.6em 2.5em 3.1em;
-
-		&__logo {
-			height: 37px;
-		}
-	}
-
-	.search {
-		margin-bottom: 3.1em;
-
-		&__input {
-			font-size: 2rem;
-		}
-	}
-
-	.first-section {
-		margin-bottom: 2.6em;
-
-		&__box {
-			&-word {
-				font-size: 6.4rem;
-			}
-
-			&-pronounce {
-				font-size: 2.4rem;
-			}
-		}
-
-		&__btn {
-			img {
-				height: 75px;
-			}
-		}
-	}
-
-	.definition {
-		margin-bottom: 2.7em;
-
-		&__title {
-			margin-bottom: 1.8em;
-			font-size: 2.4rem;
-
-			span {
-				margin-left: 2em;
-			}
-		}
-
-		&__list {
-			&-title {
-				margin-bottom: 1.35em;
-				font-size: 2rem;
-			}
-
-			&-def {
-				margin-bottom: 0.7em;
-				font-size: 1.8rem;
-			}
-		}
-
-		&__synonyms {
-			font-size: 2rem;
-
-			span {
-				margin-left: 2em;
-			}
-		}
-	}
-
-	.footer {
-		padding: 0 2.5em 4em;
 	}
 }
 
