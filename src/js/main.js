@@ -206,17 +206,20 @@ const prepareDefinitionSections = data => {
 		for (let j = 0; j < data[i].meanings.length; j++) {
 			const meaning = data[i].meanings[j];
 
-			if ('synonyms' in meaning) {
+			if (meaning.hasOwnProperty('synonyms') && Array.isArray(meaning.synonyms)) {
 				const synonyms = meaning.synonyms;
 
 				for (let k = 0; k < synonyms.length; k++) {
-					if (!synonymsObject[meaning.partOfSpeech].includes(synonyms[k])) {
+					if (
+						synonymsObject.hasOwnProperty(meaning.partOfSpeech) &&
+						!synonymsObject[meaning.partOfSpeech].includes(synonyms[k])
+					) {
 						synonymsObject[meaning.partOfSpeech].push(synonyms[k]);
 					}
 				}
 			}
 
-			if ('definitions' in meaning) {
+			if (meaning.hasOwnProperty('definitions') && Array.isArray(meaning.definitions)) {
 				const definitions = meaning.definitions;
 
 				for (let k = 0; k < definitions.length; k++) {
@@ -225,7 +228,10 @@ const prepareDefinitionSections = data => {
 						example: definitions[k].example,
 					};
 
-					if (!definitionObject[meaning.partOfSpeech].includes(definition)) {
+					if (
+						definitionObject.hasOwnProperty(meaning.partOfSpeech) &&
+						!definitionObject[meaning.partOfSpeech].includes(definition)
+					) {
 						definitionObject[meaning.partOfSpeech].push(definition);
 					}
 				}
